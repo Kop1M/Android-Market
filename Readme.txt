@@ -1,0 +1,3 @@
+Entry类是 ListView要显示的每一项
+构造entryAdapter的时候需要传入List<Entry>
+所以要获得所有的List<Entry>,要把获得的Product变成Entry
