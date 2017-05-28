@@ -1,10 +1,12 @@
 package com.kremol.market4;
 
+import java.io.Serializable;
+
 /**
  * Created by flexible on 2017/5/27.
  */
 
-public class User {
+public class User implements Serializable {
 
     private int user_id;
     private String user_name;

@@ -1,3 +1,9 @@
 Entry类是 ListView要显示的每一项
 构造entryAdapter的时候需要传入List<Entry>
 所以要获得所有的List<Entry>,要把获得的Product变成Entry
+
+
+product没有user，无法得到user头像
+product没有productImg
+productPrice拼错而且不应该是int型
+product userforsale只有名字，没有其他信息
