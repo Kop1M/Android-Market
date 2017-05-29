@@ -17,16 +17,20 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static android.R.attr.order;
 import static android.R.string.ok;
 import static com.kremol.market4.MainActivity.INIT_PRODUCT_OK;
 
 public class ProductActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final int ADDIN_SHOPCART = 0;
+    public static final int  ADD_FAILED = 1;
 
     Product product;
     User user;
@@ -40,6 +44,9 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                 case ADDIN_SHOPCART:
                     String id = String.valueOf(msg.arg1);
                     createDialog("加入购物车","已加入购物车，订单号为\n" + id);
+                    break;
+                case ADD_FAILED:
+                    createDialog("加入购物车","加入失败");
                     break;
                 default:break;
             }
@@ -65,7 +72,7 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
         /*设置product属性*/
         productDescripotin.setText(product.getAbout());
         productImage.setImageResource(R.drawable.changongzi);
-       productPrice.setText(String.valueOf(product.getProductprize()));
+       productPrice.setText(String.valueOf(product.getProductprice()));
 
         /*设置监听*/
         sellerInfo.setOnClickListener(this);
@@ -84,10 +91,14 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
             /*生成一个订单发送给服务器*/
             case R.id.add_in_shopcart:
                 /*构建订单*/
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                String time = df.format(new Date());
                 Orders  order = new Orders();
-                order.setUserforbuyer(user.getNickname());
-                order.setTotal_price(product.getProductprize());
+                order.setUserforbuyer(user.getUser_name());
+                order.setTotal_price(product.getProductprice());
                 order.setPrudut_id(product.getProduct_id());
+                order.setOrder_time(time);
+                order.setOrder_state(1);
                 order.setUserforsaler(product.getUserforsale());
                 order.setNumber(1);
 
@@ -99,7 +110,9 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                     HttpUtil.sendHttpRequest(address, new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            createDialog("加入购物车","加入失败");
+                            Message message = new Message();
+                            message.what = ADD_FAILED;
+                            handler.sendMessage(message);
                             e.printStackTrace();
                         }
 
@@ -113,7 +126,9 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     });
                 } catch (Exception e) {
-                    createDialog("加入购物车","加入失败");
+                    Message message = new Message();
+                    message.what = ADD_FAILED;
+                    handler.sendMessage(message);
                     e.printStackTrace();
                 }
                 break;

@@ -12,7 +12,7 @@ public class Product implements Serializable {
     private String publishtime;
     private String about;
     private String userforsale;
-    private int productprize;
+    private int productprice;
     private String type;
 
     public final int getProduct_id() {
@@ -29,11 +29,11 @@ public class Product implements Serializable {
     public final void setAbout(String about){this.about = about;}
     public final String getUserforsale(){return userforsale;}
     public final void setUserforsale(String userforsale){this.userforsale = userforsale;}
-    public final int getProductprize() {
-        return productprize;
+    public final int getProductprice() {
+        return productprice;
     }
-    public final void setProductprize(int productprize) {
-        this.productprize = productprize;
+    public final void setProductprice(int productprice) {
+        this.productprice = productprice;
     }
     public final String getType(){return type;}
     public final void setType(String type){this.type = type;}
@@ -43,6 +43,6 @@ public class Product implements Serializable {
     public String toString() {
         // TODO Auto-generated method stub
         return "[product_id:"+product_id+" title:"+title+" publishtime:"+publishtime+" about:"+about+
-                "userforsale:"+userforsale+"productprize:"+productprize+"type:"+type+"]";
+                "userforsale:"+userforsale+"productprice:"+productprice+"type:"+type+"]";
     }
 }

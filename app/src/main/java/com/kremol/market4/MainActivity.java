@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*从别的Activity得到user*/
         // user = (User) getIntent().getSerializableExtra("user");
         user = new User();
+        user.setUser_name("张三");
         user.setHeadPortraits(R.drawable.changongzi);
         user.setNickname("cannon");
         user.setUser_id(1);
@@ -121,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         clothesText.setOnClickListener(this);
         otherText.setOnClickListener(this);
 
+
+        /*初始化productList*/
+        initProduct();
+
         /*点击进入商品详情*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,9 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
         });
-
-        /*初始化productList*/
-        initProduct();
 
 
     }
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        productList = new ArrayList<>();
 //        Product p1 = new Product();
 //        p1.setAbout("This is a good product");
-//        p1.setProductprize(20);
+//        p1.setProductprice(20);
 //        p1.setTitle("big boom");
 //        p1.setUserforsale("cannon");
 //        p1.setProduct_id(1);
