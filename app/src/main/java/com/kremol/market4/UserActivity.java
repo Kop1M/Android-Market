@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,12 +13,14 @@ import static android.R.attr.debuggable;
 import static android.R.attr.start;
 import static android.R.attr.switchMinWidth;
 import static android.R.attr.y;
+import static com.kremol.market4.R.id.indent;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     User user;
     ImageView headImage;
-    TextView nickName,returnLook,shopCart,indent,release,myshop,signOut;
+    TextView nickName;
+    Button returnLook,shopCart,indent,release,myshop,signOut;
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -30,12 +33,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         /*获得控件*/
         headImage = (ImageView) findViewById(R.id.user_head_information);
         nickName = (TextView) findViewById(R.id.user_nick_name);
-        returnLook = (TextView) findViewById(R.id.user_return_look);
-        shopCart = (TextView) findViewById(R.id.shopcart);
-        indent = (TextView) findViewById(R.id.indent);
-        release = (TextView) findViewById(R.id.release);
-        myshop = (TextView) findViewById(R.id.myshop);
-        signOut = (TextView) findViewById(R.id.sign_out);
+        returnLook = (Button) findViewById(R.id.user_return_look);
+        shopCart = (Button) findViewById(R.id.shopcart);
+        indent = (Button) findViewById(R.id.indent);
+        release = (Button) findViewById(R.id.release);
+        myshop = (Button) findViewById(R.id.myshop);
+        signOut = (Button) findViewById(R.id.sign_out);
         /*
          设置用户属性
          */

@@ -40,35 +40,35 @@
         android:background="#F5F5F5"
         android:orientation="horizontal">
 
-        <TextView
+        <Button
             android:id="@+id/new_thing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="最新" />
 
-        <TextView
+        <Button
             android:id="@+id/electronics"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="电子" />
 
-        <TextView
+        <Button
             android:id="@+id/clothes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="衣物" />
 
-        <TextView
+        <Button
             android:id="@+id/book"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="书籍" />
 
-        <TextView
+        <Button
             android:id="@+id/other"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
