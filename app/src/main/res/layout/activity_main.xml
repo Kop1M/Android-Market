@@ -20,6 +20,7 @@
 
         <ImageView
             android:id="@+id/head_information"
+            android:clickable="true"
             android:layout_width="30dp"
             android:layout_height="30dp" />
 

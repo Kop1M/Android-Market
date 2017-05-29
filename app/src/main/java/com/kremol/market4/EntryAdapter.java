@@ -20,7 +20,8 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
     private int resourceId;
 
     public EntryAdapter(Context context, int resource, List<Entry> objects) {
-        super(context, resource);
+        super(context, resource,objects);
+        resourceId =resource;
     }
 
     @NonNull

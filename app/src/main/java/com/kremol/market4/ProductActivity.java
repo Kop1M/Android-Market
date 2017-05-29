@@ -14,20 +14,34 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     Product product;
     TextView productDescripotin,productPrice;
     ImageView productImage;
+    Button sellerInfo,addinShopcart,buyNow;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-
+        getSupportActionBar().hide();           //隐藏ActionBar
         product = (Product) getIntent().getSerializableExtra("product");
+
+
+        /*找到控件*/
+        productDescripotin = (TextView) findViewById(R.id.product_description);
+        productPrice = (TextView) findViewById(R.id.product_price);
+        productImage = (ImageView) findViewById(R.id.product_img);
+        sellerInfo = (Button) findViewById(R.id.seller_information);
+        addinShopcart = (Button) findViewById(R.id.add_in_shopcart);
+        buyNow = (Button) findViewById(R.id.buy_now);
 
         /*设置product属性*/
         productDescripotin.setText(product.getAbout());
-        productPrice.setText(product.getProductprize());
         productImage.setImageResource(R.drawable.changongzi);
+       productPrice.setText(String.valueOf(product.getProductprize()));
 
+        /*设置监听*/
+        sellerInfo.setOnClickListener(this);
+        addinShopcart.setOnClickListener(this);
+        buyNow.setOnClickListener(this);
     }
 
     @Override
@@ -42,7 +56,6 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
                        dialog.dismiss();
-                       ProductActivity.this.finish();
                    }
                 });
                 builder.create().show();

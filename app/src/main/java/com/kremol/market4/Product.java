@@ -28,7 +28,7 @@ public class Product implements Serializable {
     public final String getAbout(){return about;}
     public final void setAbout(String about){this.about = about;}
     public final String getUserforsale(){return userforsale;}
-    public final void setUserforsale(String about){this.userforsale = userforsale;}
+    public final void setUserforsale(String userforsale){this.userforsale = userforsale;}
     public final int getProductprize() {
         return productprize;
     }
