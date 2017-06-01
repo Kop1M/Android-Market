@@ -25,7 +25,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        getSupportActionBar().hide();           //隐藏ActionBar
+
 
         user = (User) getIntent().getSerializableExtra("user");
 
@@ -46,6 +46,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         nickName.setText(user.getNickname());
 
         /*设置监听*/
+        headImage.setOnClickListener(this);
         returnLook.setOnClickListener(this);
         shopCart.setOnClickListener(this);
         indent.setOnClickListener(this);
@@ -60,13 +61,23 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             //进入模块接口
-            case R.id.shopcart:
+            case R.id.user_head_information:
+                Intent imgIntent = new Intent(UserActivity.this,UserMsgActivity.class);
+                imgIntent.putExtra("user",user);
+                startActivity(imgIntent);
                 break;
             case R.id.indent:
+                Intent intentIndent = new Intent(UserActivity.this,OrderActivity.class);
+                intentIndent.putExtra("user",user);
+                startActivity(intentIndent);
                 break;
             case R.id.release:
+                Intent intentrelease = new Intent(UserActivity.this,GoodsDesActivity.class);
+                intentrelease.putExtra("user",user);
+                startActivity(intentrelease);
                 break;
             case R.id.myshop:
+
                 break;
             case R.id.user_return_look:
                 Intent intent = new Intent(UserActivity.this,MainActivity.class);
@@ -74,6 +85,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.sign_out:
+                Intent signoutIntent = new Intent(this,LoginActivity.class);
+                startActivity(signoutIntent);
                 break;
             default:
                 break;

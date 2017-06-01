@@ -14,7 +14,7 @@ public class Orders implements Serializable{
     private String userforsaler;
     private String userforbuyer;
     private int number;
-    private int prudut_id;
+    private int product_id;
 
     public final int getOrder_id() {   return order_id;  }
     public final void setOrder_id(int order_id) {
@@ -57,16 +57,16 @@ public class Orders implements Serializable{
     public final void setNumber(int number) {
         this.number = number;
     }
-    public final int getPrudut_id() {   return prudut_id;  }
-    public final void setPrudut_id(int prudut_id) {
-        this.prudut_id = prudut_id;
+    public final int getProduct_id() {   return product_id;  }
+    public final void setProduct_id(int prudut_id) {
+        this.product_id = prudut_id;
     }
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
         return " order_id:"+order_id+" order_time:"+order_time+" order_state:"+order_state+" total_price:"+total_price+" userforsaler:"+userforsaler+
-                "userforbuyer:"+userforbuyer+"number:"+number+"prudut_id:"+prudut_id;
+                "userforbuyer:"+userforbuyer+"number:"+number+"prudut_id:"+product_id;
     }
 
 }

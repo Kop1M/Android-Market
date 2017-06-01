@@ -93,15 +93,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();           //隐藏ActionBar
+
 
         /*从别的Activity得到user*/
-        // user = (User) getIntent().getSerializableExtra("user");
-        user = new User();
-        user.setUser_name("张三");
-        user.setHeadPortraits(R.drawable.changongzi);
-        user.setNickname("cannon");
-        user.setUser_id(1);
+        user = (User) getIntent().getSerializableExtra("user");
+//        user = new User();
+//        user.setUser_name("张三");
+//        user.setHeadPortraits(R.drawable.changongzi);
+//        user.setNickname("cannon");
+//        user.setUser_id(1);
+        user.setHeadPortraits(R.drawable.meimei);
         /*得到控件*/
         listView = (ListView) findViewById(R.id.list_view);
         headImg = (ImageView) findViewById(R.id.head_information);

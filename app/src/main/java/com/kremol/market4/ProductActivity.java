@@ -57,7 +57,7 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-        getSupportActionBar().hide();           //隐藏ActionBar
+
         product = (Product) getIntent().getSerializableExtra("product");
         user= (User) getIntent().getSerializableExtra("user");
 
@@ -96,7 +96,7 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                 Orders  order = new Orders();
                 order.setUserforbuyer(user.getUser_name());
                 order.setTotal_price(product.getProductprice());
-                order.setPrudut_id(product.getProduct_id());
+                order.setProduct_id(product.getProduct_id());
                 order.setOrder_time(time);
                 order.setOrder_state(1);
                 order.setUserforsaler(product.getUserforsale());
