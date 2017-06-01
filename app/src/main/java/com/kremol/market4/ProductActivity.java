@@ -1,6 +1,7 @@
 package com.kremol.market4;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -135,6 +136,9 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
 
             /*调到订单结算界面*/
             case R.id.buy_now:
+                Intent a = new Intent(ProductActivity.this,OrderActivity.class);
+                a.putExtra("user",user);
+                startActivity(a);
                 break;
             default:
                 break;

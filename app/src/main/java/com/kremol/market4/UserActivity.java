@@ -20,7 +20,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     User user;
     ImageView headImage;
     TextView nickName;
-    Button returnLook,shopCart,indent,release,myshop,signOut;
+    Button returnLook,indent,release,myshop,signOut;
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         headImage = (ImageView) findViewById(R.id.user_head_information);
         nickName = (TextView) findViewById(R.id.user_nick_name);
         returnLook = (Button) findViewById(R.id.user_return_look);
-        shopCart = (Button) findViewById(R.id.shopcart);
         indent = (Button) findViewById(R.id.indent);
         release = (Button) findViewById(R.id.release);
         myshop = (Button) findViewById(R.id.myshop);
@@ -48,7 +47,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         /*设置监听*/
         headImage.setOnClickListener(this);
         returnLook.setOnClickListener(this);
-        shopCart.setOnClickListener(this);
         indent.setOnClickListener(this);
         release.setOnClickListener(this);
         myshop.setOnClickListener(this);
@@ -77,7 +75,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intentrelease);
                 break;
             case R.id.myshop:
-
+                Intent  intentMyshop = new Intent(UserActivity.this,MyshopActivity.class);
+                intentMyshop.putExtra("user",user);
+                startActivity(intentMyshop);
                 break;
             case R.id.user_return_look:
                 Intent intent = new Intent(UserActivity.this,MainActivity.class);

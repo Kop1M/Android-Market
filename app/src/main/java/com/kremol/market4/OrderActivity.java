@@ -57,9 +57,9 @@ public class OrderActivity extends AppCompatActivity {
     private Orders order;
     private int orderId;
     private User user;
-    private String getAllOrdersURL = "http://47.93.249.197:8088/secondary/getAllOrderServlet?userforbuyer=";
-    private String getProductURL = "http:// 47.93.249.197:8088/secondary/getProductByIdServlet?product_id=";
-    private String deleteOrderURL = "http:// 47.93.249.197:8088/secondary/deleteOrderServlet?order_id=";
+    private String getAllOrdersURL = "http://47.93.249.197:8080/secondary/getAllOrderServlet?userforbuyer=";
+    private String getProductURL = "http:// 47.93.249.197:8080/secondary/getProductByIdServlet?product_id=";
+    private String deleteOrderURL = "http:// 47.93.249.197:8080/secondary/deleteOrderServlet?order_id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +112,7 @@ public class OrderActivity extends AppCompatActivity {
                     //System.out.print("1111111111111111111111111111111111111111111");
                 }else{
                     orderHandler.sendEmptyMessage(0);
+                   // System.out.print("100000000000000000000000000000000000");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

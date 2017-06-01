@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     for (int i = 0; i < entryList.size(); i++) {
                         Entry entry = entryList.get(i);
                         String type = entry.getProduct().getType();
-                        if (type.equals("最新")) {
+                        if (type.equals("化妆品")) {
                             group = 0;
                         } else if (type.equals("电子")) {
                             group = 1;

@@ -27,12 +27,46 @@ import static android.R.id.message;
 import static com.kremol.market4.MainActivity.INIT_PRODUCT_OK;
 import static java.security.AccessController.getContext;
 
-public class MyshopActivity extends AppCompatActivity implements MyshopAdapter.Callback {
+public class MyshopActivity extends AppCompatActivity {
 
     public final static int INIT_ORDER_OK = 2;
-
-    List<Product> ProductList;
+    public final static int DLETE_OK =3;
+    MyshopAdapter adapter;
+    List<Product> ProductList = new ArrayList<>();
     private ListView listView;
+    MyshopAdapter.Callback mCallback = new MyshopAdapter.Callback() {
+        @Override
+        public void click(View v, final Product p) {
+            try {
+                String address = "http://47.93.249.197:8080/secondary/deleteProductServlet?" + "product_id=" +
+                        URLEncoder.encode(String.valueOf(p.getProduct_id()), "utf8");
+                HttpUtil.sendHttpRequest(address, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responseData = response.body().string();
+                        Gson gson = new Gson();
+                        Boolean deleteOk = gson.fromJson(responseData,boolean.class);
+                        if(deleteOk){
+                            ProductList.remove(p);
+                            Message message = new Message();
+                            message.what = DLETE_OK;
+                            handler.sendMessage(message);
+                        }
+                        else{
+                            Toast.makeText(MyshopActivity.this, "delete failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
 
     User user;
 
@@ -40,10 +74,15 @@ public class MyshopActivity extends AppCompatActivity implements MyshopAdapter.C
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case INIT_ORDER_OK:
-                   // MyshopAdapter myshopAdapter = new MyshopAdapter(MyshopActivity.this, R.layout.thing, ProductList,this);
-                  //  listView.setAdapter(myshopAdapter);
+                     adapter = new MyshopAdapter(MyshopActivity.this, R.layout.thing, ProductList);
+                    adapter.mCallback = mCallback;
+                   listView.setAdapter(adapter);
                     break;
-
+                case DLETE_OK:
+                    adapter = new MyshopAdapter(MyshopActivity.this, R.layout.thing, ProductList);
+                    adapter.mCallback = mCallback;
+                    listView.setAdapter(adapter);
+                    break;
                 default:
                     break;
             }
@@ -57,12 +96,8 @@ public class MyshopActivity extends AppCompatActivity implements MyshopAdapter.C
 
 
 
-        //user = (User) getIntent().getSerializableExtra("user");
-        user = new User();
-        user.setUser_name("张三");
-        user.setHeadPortraits(R.drawable.changongzi);
-        user.setNickname("cannon");
-        user.setUser_id(1);
+        user = (User) getIntent().getSerializableExtra("user");
+
         listView = (ListView) findViewById(R.id.myshop_listview);
 
 
@@ -73,7 +108,9 @@ public class MyshopActivity extends AppCompatActivity implements MyshopAdapter.C
 
     public void myshopInit() {
         try {
-            String address = "http://47.93.249.197:8080/secondary/getProductByNameServlet?" + "userforsale=" + user.getUser_name();
+            //  String address = "http://47.93.249.197:8080/secondary/getAllOrderServlet?userforbuyer=" +
+            String address = "http://47.93.249.197:8080/secondary/getProductsByNameServlet?" + "userforsale=" +
+                    URLEncoder.encode(user.getUser_name(),"utf8");
             HttpUtil.sendHttpRequest(address, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -95,33 +132,7 @@ public class MyshopActivity extends AppCompatActivity implements MyshopAdapter.C
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
-
-
-//    @Override
-//    public void deleteorder(int orderId) {
-//        String address = "http://47.93.249.197:8080/secondary/deleteOrderServlet?" + "order_id=" + orderId;
-//        HttpUtil.sendHttpRequest(address, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseData = response.body().string();
-//                if(responseData.equals("true")) {
-//                    Message message = new Message();
-//                    message.what = INIT_ORDER_OK;
-//                    handler.sendMessage(message);
-//                }
-//            }
-//        });
-//    }
-
-    @Override
-    public void click(View v) {
-        Toast.makeText(MyshopActivity.this, "delete", Toast.LENGTH_SHORT).show();
-    }
 }

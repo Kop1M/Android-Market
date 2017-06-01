@@ -6,6 +6,7 @@ package com.kremol.market4;
  * Created by flexible on 2017/6/1.
  */
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ArrayAdapter;
@@ -29,16 +30,15 @@ import static com.kremol.market4.MyshopActivity.INIT_ORDER_OK;
 public class MyshopAdapter extends ArrayAdapter<Product> {
 
     private int resourceId;
-    private Callback mCallback;
+    public Callback mCallback;
 
-    public MyshopAdapter(Context context, int resource, List<Product> objects, Callback callback) {
+    public MyshopAdapter(Context context, int resource, List<Product> objects) {
         super(context, resource,objects);
         resourceId =resource;
-        mCallback = callback;
     }
 
     public interface  Callback{
-        public void click(View v);
+         void click(View v,Product p);
     }
 
     @NonNull
@@ -64,10 +64,10 @@ public class MyshopAdapter extends ArrayAdapter<Product> {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.click(v);
+                mCallback.click(v,product);
             }
         });
-        productName.setText(product.getProduct_id());
+        productName.setText(product.getTitle());
         return view;
     }
 
