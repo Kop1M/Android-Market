@@ -91,7 +91,7 @@ public class GoodsDesActivity extends AppCompatActivity {
                 finish();
             }
         });
-/*
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -103,7 +103,7 @@ public class GoodsDesActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });*/
+        });
 
         desButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +132,7 @@ public class GoodsDesActivity extends AppCompatActivity {
             product.setType(productType);
             product.setTitle(productName);
             product.setPublishtime(publishtime);
-            product.setType("电子");
+            product.setType(productType);
             product.setUserforsale(username);
 
             String desGoodtoJson = gson.toJson(product);
