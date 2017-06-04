@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +15,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.kremol.market4.MainActivity;
+import com.kremol.market4.Product;
+import com.kremol.market4.R;
+import com.kremol.market4.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -31,10 +34,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
+
 public class GoodsDesActivity extends AppCompatActivity {
 
     protected Toolbar mToolbar;
-    private User user;
+    private Bundle bundle;
     private String username;
     private String password;
     private String address;
@@ -50,18 +54,19 @@ public class GoodsDesActivity extends AppCompatActivity {
     private String productScr;
     private String productType;
     private String responseText;
-    private String desGoodsURL = "http://47.93.249.197:8088/scondary/addProductServlet?product=";
+    private User user;
+    private String desGoodsURL = "http://47.93.249.197:8080/scondary/addProductServlet?product=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_goods_des);
+
         mToolbar = (Toolbar)findViewById(R.id.toolbar_main);
         mToolbar.setNavigationIcon(R.drawable.icback);
         mToolbar.setTitle("发布商品");
         //mToolbar.setLogo(R.drawable.market);//设计图片
-       setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
 
         //实体化
         et_proudctname = (EditText)findViewById(R.id.et_proudctname) ;
@@ -70,7 +75,7 @@ public class GoodsDesActivity extends AppCompatActivity {
         spinner = (Spinner)findViewById(R.id.spinner);
         desButton = (Button)findViewById(R.id.butDes);
 
-       user = (User) getIntent().getSerializableExtra("user");
+        user = (User) getIntent().getSerializableExtra("user");
         username = user.getUser_name();
         password = user.getPassword();
         address =user.getAddress();
@@ -117,7 +122,7 @@ public class GoodsDesActivity extends AppCompatActivity {
         @Override
         public void run(){
             Gson gson = new Gson();
-            SimpleDateFormat formatter    =   new    SimpleDateFormat    ("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat formatter   =   new   SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
             Date    curDate    =   new Date(System.currentTimeMillis());//获取当前时间
             String    publishtime    =    formatter.format(curDate);
 
@@ -131,9 +136,9 @@ public class GoodsDesActivity extends AppCompatActivity {
             product.setUserforsale(username);
 
             String desGoodtoJson = gson.toJson(product);
-            String url = desGoodsURL + desGoodtoJson;
+            String url = null;
             try {
-                url = URLEncoder.encode(url,"UTF-8");
+                url ="http://47.93.249.197:8080/secondary/addProductServlet?product="+URLEncoder.encode(desGoodtoJson,"UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -182,4 +187,3 @@ public class GoodsDesActivity extends AppCompatActivity {
     };
 
 }
-

@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.51"
 
-            android:text="  订单"
+            android:text="  我的订单"
             android:textSize="20dp" />
     </LinearLayout>
 

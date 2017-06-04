@@ -136,6 +136,47 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
 
             /*调到订单结算界面*/
             case R.id.buy_now:
+                  /*构建订单*/
+                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                String time2 = df2.format(new Date());
+                Orders  order2 = new Orders();
+                order2.setUserforbuyer(user.getUser_name());
+                order2.setTotal_price(product.getProductprice());
+                order2.setProduct_id(product.getProduct_id());
+                order2.setOrder_time(time2);
+                order2.setOrder_state(1);
+                order2.setUserforsaler(product.getUserforsale());
+                order2.setNumber(1);
+
+                Gson gson2 = new Gson();
+                String orderJson2 = gson2.toJson(order2);
+                try {
+                    String address = "http://47.93.249.197:8080/secondary/addOrderServlet?"+"order="+ URLEncoder
+                            .encode(orderJson2,"utf8");
+                    HttpUtil.sendHttpRequest(address, new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Message message = new Message();
+                            message.what = ADD_FAILED;
+                            handler.sendMessage(message);
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseData = response.body().string();
+                            Message message = new Message();
+                            message.what = ADDIN_SHOPCART;
+                            message.arg1 = Integer.valueOf(responseData);
+                            handler.sendMessage(message);
+                        }
+                    });
+                } catch (Exception e) {
+                    Message message = new Message();
+                    message.what = ADD_FAILED;
+                    handler.sendMessage(message);
+                    e.printStackTrace();
+                }
                 Intent a = new Intent(ProductActivity.this,OrderActivity.class);
                 a.putExtra("user",user);
                 startActivity(a);

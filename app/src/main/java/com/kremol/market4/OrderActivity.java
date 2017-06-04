@@ -20,7 +20,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kremol.market4.MainActivity;
+import com.kremol.market4.Orders;
+import com.kremol.market4.Product;
 import com.kremol.market4.R;
+import com.kremol.market4.User;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -34,8 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -57,9 +58,12 @@ public class OrderActivity extends AppCompatActivity {
     private Orders order;
     private int orderId;
     private User user;
+    private SimpleAdapter adapter;
+    private Bundle bundle = new Bundle();
+    private int count = 0;
     private String getAllOrdersURL = "http://47.93.249.197:8080/secondary/getAllOrderServlet?userforbuyer=";
-    private String getProductURL = "http:// 47.93.249.197:8080/secondary/getProductByIdServlet?product_id=";
-    private String deleteOrderURL = "http:// 47.93.249.197:8080/secondary/deleteOrderServlet?order_id=";
+    private String getProductURL = "http://47.93.249.197:8080/secondary/getProductByIdServlet?product_id=";
+    private String deleteOrderURL = "http://47.93.249.197:8080/secondary/deleteOrderServlet?order_id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order);
 
         orderListView = (ListView)findViewById(R.id.orderListView) ;
+
+
 
         user = (User) getIntent().getSerializableExtra("user");
         username = user.getUser_name();
@@ -84,12 +90,14 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent a = new Intent(OrderActivity.this,MainActivity.class);
-                a.putExtra("user",user);
+                a.putExtras(bundle);
                 startActivity(a);
             }
         });
-        //System.out.println("5555555555555555555555555555");
         new Thread(new GetOrderRunner()).start();
+
+
+
 
     }
 
@@ -112,7 +120,6 @@ public class OrderActivity extends AppCompatActivity {
                     //System.out.print("1111111111111111111111111111111111111111111");
                 }else{
                     orderHandler.sendEmptyMessage(0);
-                   // System.out.print("100000000000000000000000000000000000");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -131,54 +138,20 @@ public class OrderActivity extends AppCompatActivity {
                 ordersList = new ArrayList<Orders>();
 
                 ordersList = gson.fromJson(orderResponseText,new TypeToken<List<Orders>>(){}.getType());
-                System.out.print("2222222222222222222222222222222222222222222");
-                Toast.makeText(OrderActivity.this,ordersList.toString(),Toast.LENGTH_SHORT).show();
+                System.out.println("2222222222222222222222222222222222222222222"+ ordersList.toString());
+                // Toast.makeText(OrderActivity.this,ordersList.toString(),Toast.LENGTH_SHORT).show();
 
-                SimpleAdapter adapter = new SimpleAdapter(OrderActivity.this,orderList,R.layout.activity_orderlist_iitem,
-                        new String[]{"orderTime","orderState","orderPrice","orderAbout","orderType"},
-                        new int[]{R.id.txtTime,R.id.txtState,R.id.txtPrice,R.id.txtAbout,R.id.txtType});
+                adapter = new SimpleAdapter(OrderActivity.this,orderList,R.layout.activity_orderlist_iitem,
+                        new String[]{"orderTime","orderState","orderPrice","orderAbout","orderType","orderTitle"},
+                        new int[]{R.id.txtTime,R.id.txtState,R.id.txtPrice,R.id.txtAbout,R.id.txtType,R.id.txtTitle});
 
-                for(int i = 0; i< ordersList.size();i++){
-                    order = ordersList.get(i);
+                System.out.println("+++++++++++++++++++++++++" + ordersList.size());
+
+                if(ordersList.size() != 0){
                     new Thread(new GetProductRunner()).start();
+                }else {
+                    orderListView.setAdapter(adapter);
                 }
-
-                for(int j = 0;j<ordersList.size();j++){
-                    order = ordersList.get(j);
-                    product = productsList.get(j);
-
-                    map = new HashMap<String,Object>();
-                    map.put("orderTime",order.getOrder_time());
-                    map.put("orderStata",order.getOrder_state());
-                    map.put("orderPrice",order.getTotal_price());
-                    map.put("orderAbout",product.getAbout());
-                    map.put("orderType",product.getType());
-                    orderList.add(map);
-                }
-
-                orderListView.setAdapter(adapter);
-                orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        orderId = ordersList.get(position).getOrder_id();
-                        AlertDialog.Builder builder=new AlertDialog.Builder(OrderActivity.this);
-                        builder.setTitle("删除订单");
-                        builder.setMessage("是否确认删除订单");
-                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new Thread(new DeleteOrderRunner()).start();
-                                    }
-                                }
-                        );
-                        builder.setNegativeButton("取消", null);
-                    }
-                });
-
-
-
-
-
             }
         }
     };
@@ -188,7 +161,7 @@ public class OrderActivity extends AppCompatActivity {
         @Override
         public void run(){
 
-            String url = getProductURL+ order.getProduct_id();
+            String url = getProductURL+ordersList.get(count).getProduct_id();
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet(url);
@@ -201,7 +174,6 @@ public class OrderActivity extends AppCompatActivity {
                     productResponsetext = EntityUtils.toString(response.getEntity());//返回的参数
                     productHandler.sendEmptyMessage(1);
                 }else{
-
                     productHandler.sendEmptyMessage(0);
                 }
             } catch (IOException e) {
@@ -218,7 +190,56 @@ public class OrderActivity extends AppCompatActivity {
             if(msg.what == 1){
                 Gson gson = new Gson();
                 product = gson.fromJson(productResponsetext,new TypeToken<Product>(){}.getType());
-                productsList.add(product);
+
+                if(product.getAbout() != ""){
+                    productsList.add(product);
+                }
+                count++;
+                if(count < ordersList.size()){
+                    new Thread(new GetProductRunner()).start();
+                }else{
+
+                    System.out.println("-----------------------------" + productsList.toString());
+
+                    for(int j = 0;j<productsList.size();j++){
+                        order = ordersList.get(j);
+                        product = productsList.get(j);
+
+                        map = new HashMap<String,Object>();
+                        map.put("orderTitle", "订单名称" + product.getTitle());
+                        map.put("orderTime","发布时间" + order.getOrder_time());
+                        map.put("orderStata",order.getOrder_state());
+                        map.put("orderPrice","总价" + order.getTotal_price());
+                        map.put("orderAbout", product.getAbout());
+                        map.put("orderType","商品类型" + product.getType());
+                        orderList.add(map);
+                    }
+                    orderListView.setAdapter(adapter);
+
+                    orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            orderId = ordersList.get(position).getOrder_id();
+                            AlertDialog.Builder builder=new AlertDialog.Builder(OrderActivity.this);
+                            builder.setTitle("删除订单");
+                            builder.setMessage("是否确认删除订单");
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new Thread(new DeleteOrderRunner()).start();
+                                        }
+                                    }
+                            );
+                            builder.setNegativeButton("取消", null);
+                            builder.show();
+
+                            //Toast.makeText(OrderActivity.this,"-----------------" + orderId,Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
             }
         }
     };
@@ -241,7 +262,12 @@ public class OrderActivity extends AppCompatActivity {
 
                 if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                     String responsetext = EntityUtils.toString(response.getEntity());//返回的参数
-                    deleteHandler.sendEmptyMessage(1);
+                    Gson gson = new Gson();
+                    Boolean a =gson.fromJson(responsetext,Boolean.class);
+                    if(a){
+                        deleteHandler.sendEmptyMessage(1);
+                    }else
+                        deleteHandler.sendEmptyMessage(0);
                 }else{
                     deleteHandler.sendEmptyMessage(0);
                 }
@@ -256,10 +282,12 @@ public class OrderActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.what == 1){
+                count = 0;
                 new Thread(new GetOrderRunner()).start();
             }
         }
     };
+
 
 
 }
