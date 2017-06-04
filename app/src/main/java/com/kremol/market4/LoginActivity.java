@@ -337,7 +337,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Ges
             String registJsonURL = gson.toJson(userRegist);
             String url = null;
             try {
-                url = "http://10.130.205.56:8080/secondary/addProductServlet?product=" + URLEncoder.encode(gson.toJson(userRegist), "UTF-8");
+                url = "http://47.93.249.197:8080/secondary/addUserServlet?user=" + URLEncoder.encode(gson.toJson(userRegist), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
